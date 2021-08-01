@@ -32,24 +32,48 @@ var financeController = (function() {
         this.description = description;
         this.value = value;
     };
-    var expense = function(id, description, value){
+    var Expense = function(id, description, value){
         this.id=id;
         this.description = description;
         this.value = value;
     };
 
 
-    var data= {
-        allItems:{
-            inc = [],
-            exp = []
-        },
-        totals:{
-            inc = 0,
-            exp = 0
+var data = {
+    items: {
+      inc: [],
+      exp: []
+    },
+
+    totals: {
+      inc: 0,
+      exp: 0
+    }
+  };
+
+    return {
+        addItem : function(type, desc, val){
+
+            var item, id;
+
+            if(data.items[type].length === 0) id = 1;
+            else {
+                id= data.items[type][data.items[type].length-1].id+1;
+            }
+
+            if(type==='inc'){
+                item = new Income(id, desc, val);
+            }else{
+                item = new Expense(id, desc, val)
+            }
+
+
+            data.items[type].push(item);
         }
     }
-})();
+}
+
+)();
 
 
 // Програмыг холбогч контроллер
@@ -60,10 +84,9 @@ var appController = (function(uiController, financeController){
     var ctrlAddItem = function(){
                 // 1. оруулах өгөгдөлийг дэлгэцээс олж авна
 
-                console.log('ajilj bn');
-                console.log(uiController.getInput());
+                var input = uiController.getInput;
         // 2. Олж авсан өгөгдөлүүдийг санхүүгийн контроллерт дамжуулж хадгална
-
+        financeController.addItem(input.prototype, input.description, input.val);
         // 3. Олж авсан өгөгдөлүүдийг вэбийн тохирох хэсэгт харуулна
 
         // 4. Төсөвийг тооцно
